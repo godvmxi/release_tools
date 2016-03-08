@@ -15,7 +15,6 @@ if test -d products/$prod; then
 	mkdir -p output/images
 	rm -f output/product
 	ln -s $curd/products/$prod output/product
-	cp -f output/product/items.itm output/images/
 	echo "product successfully set to $prod"
 else
 	echo $prod is not a valid product
