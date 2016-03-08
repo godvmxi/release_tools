@@ -5,7 +5,7 @@ curd=`pwd`
 if [ -z $1 ]; then
 	echo "please choose a product from list below:"
 	ls products/
-	printf "\nyour choice:"
+	printf "\nyour choice: "
 	read prod
 else
 	prod=$1
