@@ -4,7 +4,7 @@ curd=`pwd`
 
 if [ -z $1 ]; then
 	echo "please choose a product from list below:"
-	ls products/
+	ls --color products/
 	printf "\nyour choice: "
 	read prod
 else
@@ -15,7 +15,8 @@ if test -d products/$prod; then
 	mkdir -p output/images
 	rm -f output/product
 	ln -s $curd/products/$prod output/product
-	echo "product successfully set to $prod"
+	make qsdk_defconfig
+	echo -e "\nproduct successfully set to $prod\n"
 else
 	echo $prod is not a valid product
 fi
