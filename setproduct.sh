@@ -3,8 +3,12 @@
 curd=`pwd`
 
 if [ -z $1 ]; then
-	echo "please choose a product from list below:"
-	ls --color products/
+	echo -e "\nplease choose a product from list below:\n"
+	for i in `ls products/`; do
+		if [ -d "products/$i" ]; then
+			echo "  $i"
+		fi
+	done
 	printf "\nyour choice: "
 	read prod
 else
