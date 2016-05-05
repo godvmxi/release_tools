@@ -1,0 +1,10 @@
+name linux:qsdk
+
+images:
+i run 0x3c000200 0x3c000000 uboot0.isi
+r flash 0x0	 uboot0.isi
+r flash 0x1	 items.itm
+r flash 0x2	 ramdisk.img
+r flash 0x3  	uImage
+#r flash 0x4  	uImage
+r flash 0x5  rootfs.ext4
