@@ -15,8 +15,22 @@ if [ -n $1 ]; then
 		cp -rf $i $2
 	done
 fi
+
+}
+
+make_ius() {
+	arch=`uname -m`
+	if [ z"$arch" == z"x86_64" ]
+	then
+		iuw=iuw_64
+	else
+		iuw=iuw_32
+	fi
+
+	tools/$iuw mkius output/product/$1.ixl -o output/images/$1.ius
 }
 
 install_add "${image_add}" output/images
 install_add "${initrd_add}" output/initrd
-
+make_ius ota
+make_ius burn
