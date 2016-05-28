@@ -20,18 +20,11 @@ fi
 
 make_ius() {
 	version=$(cat output/product/system/root/version |  awk '{print $0}')
-	arch=`uname -m`
-	if [ z"$arch" == z"x86_64" ]
-	then
-		iuw=iuw_64
-	else
-		iuw=iuw_32
-	fi
-
-	tools/$iuw mkius output/product/$1.ixl -s $version -o output/images/$1.ius
+	output/host/usr/bin/iuw mkius output/product/$1.ixl -s $version -o output/images/$1.ius
 }
 
 install_add "${image_add}" output/images
 install_add "${initrd_add}" output/initrd
 make_ius ota
 make_ius burn
+
