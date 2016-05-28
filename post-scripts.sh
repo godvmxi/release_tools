@@ -20,7 +20,12 @@ fi
 
 make_ius() {
 	version=$(cat output/product/system/root/version |  awk '{print $0}')
-	output/host/usr/bin/iuw mkius output/product/$1.ixl -s $version -o output/images/$1.ius
+	if [ "$version" =  "" ]
+	then
+		output/host/usr/bin/iuw mkius output/product/$1.ixl -o output/images/$1.ius
+	else
+		output/host/usr/bin/iuw mkius output/product/$1.ixl -s $version -o output/images/$1.ius
+	fi
 }
 
 install_add "${image_add}" output/images
