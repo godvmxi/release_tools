@@ -27,6 +27,11 @@ u 0x32
 EOF
 
 ${iuw} mkius ${out_path}/debug.ixl -o ${out_path}/a.ius
+if [ $? -gt 0 ]
+then
+	exit 1
+fi
+
 echo -e "\ninstall ius..."
 sudo dd if=${out_path}/a.ius of=$1 bs=1M seek=16
 sudo sync
@@ -67,9 +72,9 @@ echo -e "done\n"
 echo "install system..."
 sudo mount ${1}2 ${out_path}/system
 sudo tar xf ${image_path}/rootfs.tar -C ${out_path}
-echo -e "done\n"
 
 # clear environment
 sudo umount ${out_path}/system
 rm -rf ${out_path}/*
+echo -e "done\n"
 
