@@ -13,6 +13,8 @@ then
     exit 1
 fi
 
+umount ${1}1  > /dev/null  2>&1
+
 echo "install ius..."
 sudo dd if=${image_path}/burn.ius of=$1 bs=1M seek=16
 sudo sync

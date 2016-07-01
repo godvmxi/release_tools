@@ -15,6 +15,8 @@ then
     exit 1
 fi
 
+umount ${1}*  > /dev/null  2>&1
+
 # gen environment
 mkdir -p ${out_path}/system
 cat << EOF > ${out_path}/debug.ixl
