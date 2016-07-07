@@ -30,41 +30,51 @@ gen_rel_mk() {
 	echo -en "${UNAME}_MAINTAINED = YES\n"
 	cat system/$1/${LNAME}.mk | grep "DEPENDENCIES" | head -1
 	echo
-	echo -en "S = \$(shell pwd)/system/${LNAME}\n\n"
+	echo -en "${UNAME}_LOCAL_SRC = \$(shell pwd)/system/${LNAME}\n\n"
 	echo -e "${UNAME}_MAKE_OPTS = \\"
 	echo -e "\tCC=\"\$(TARGET_CC)\" \\"
 	echo -e "\tARCH=\$(KERNEL_ARCH) \\"
 	echo -e "\tCROSS_COMPILE=\"\$(TARGET_CROSS)\" \\"
-	echo -en "\tS=\$(S)\n\n"
+	echo -en "\tS=\$(${UNAME}_LOCAL_SRC)\n\n"
 	echo -en "# generic install\n"
 	echo -en "define ${UNAME}_RELEASE_INSTALL\n"
 
-	if [ -n "`ls ${S}/header/* 2>/dev/null`" ]; then
+	if [ -n "`ls ${S}/header 2>/dev/null`" ]; then
 		echo -en "\n\t# install headers\n"
-		echo -en "\tcp -pdrf \$(S)/header/* \$(STAGING_DIR)/\n"
+		echo -en "\tcp -pdrf \$(${UNAME}_LOCAL_SRC)/header/* \$(STAGING_DIR)/\n"
 	fi
 
-	if [ -n "`ls ${S}/static/* 2>/dev/null`" ]; then
+	if [ -n "`ls ${S}/static 2>/dev/null`" ]; then
 		echo -en "\n\t# install static libs\n"
-		echo -en "\tcp -pdrf \$(S)/static/* \$(STAGING_DIR)/\n"
+		echo -en "\tcp -pdrf \$(${UNAME}_LOCAL_SRC)/static/* \$(STAGING_DIR)/\n"
 	fi
 
-	if [ -n "`ls ${S}/shared/* 2>/dev/null`" ]; then
+	if [ -n "`ls ${S}/shared 2>/dev/null`" ]; then
 		echo -en "\n\t# install shared libs\n"
-		echo -en "\tcp -pdrf \$(S)/shared/* \$(STAGING_DIR)/\n"
-		echo -en "\tcp -pdrf \$(S)/shared/* \$(TARGET_DIR)/\n"
+		echo -en "\tcp -pdrf \$(${UNAME}_LOCAL_SRC)/shared/* \$(STAGING_DIR)/\n"
+		echo -en "\tcp -pdrf \$(${UNAME}_LOCAL_SRC)/shared/* \$(TARGET_DIR)/\n"
+	fi
+
+	if [ -n "`ls ${S}/binary 2>/dev/null`" ]; then
+		echo -en "\n\t# install binaries\n"
+		echo -en "\tcp -pdrf \$(${UNAME}_LOCAL_SRC)/binary/* \$(TARGET_DIR)/\n"
+	fi
+
+	if [ -n "`ls ${S}/resource 2>/dev/null`" ]; then
+		echo -en "\n\t# install resources\n"
+		echo -en "\tcp -pdrf \$(${UNAME}_LOCAL_SRC)/resource/* \$(TARGET_DIR)/\n"
 	fi
 
 	if [ -n "`ls ${S}/*.pc 2>/dev/null`" ]; then
 		echo -en "\n\t# install pkgconfig\n"
-		echo -en "\tcp -pdrf \$(S)/*.pc \$(STAGING_DIR)/usr/lib/pkgconfig/\n"
+		echo -en "\tcp -pdrf \$(${UNAME}_LOCAL_SRC)/*.pc \$(STAGING_DIR)/usr/lib/pkgconfig/\n"
 	fi
 
-	if [ -n "`ls ${S}/module/* 2>/dev/null`" ]; then
+	if [ -n "`ls ${S}/module 2>/dev/null`" ]; then
 		echo -en "\n\t# install ko\n"
 		echo -en "\tmkdir -p \$(TARGET_DIR)/lib/modules/${K_VER}/extra/\n"
-		echo -en "\tcp -pdrf \$(S)/module/*.ko \$(TARGET_DIR)/lib/modules/${K_VER}/extra/\n"
-		echo -en "\t\$(TARGET_MAKE_ENV) \$(MAKE) \$(${UNAME}_MAKE_OPTS) -C \$(S) install\n"
+		echo -en "\tcp -pdrf \$(${UNAME}_LOCAL_SRC)/module/*.ko \$(TARGET_DIR)/lib/modules/${K_VER}/extra/\n"
+		echo -en "\t\$(TARGET_MAKE_ENV) \$(MAKE) \$(${UNAME}_MAKE_OPTS) -C \$(${UNAME}_LOCAL_SRC) install\n"
 		echo -en "\t\$(TARGET_MAKE_ENV) \$(MAKE) \$(${UNAME}_MAKE_OPTS) -C output/build/linux-local INSTALL_MOD_PATH=${S}/../../output/system modules_install\n"
 	fi
 	echo -en "endef\n\n"
@@ -77,6 +87,7 @@ gen_rel_pkg() {
 	P_SRC=system/$1
 	P_OBJ=output/build/${1}*
 	P_DST=${P_ABS}/system/$1
+	P_TGT=output/system
 
 	if [ -z "$1" ]; then
 		echo "$0 PKG_NAME"
@@ -108,8 +119,8 @@ gen_rel_pkg() {
 		DIR=$1; gsub(":", "", DIR)
 	} else if ($1) {
 		system("mkdir -p '${P_DST}'/" DIR "/" $2)
-		CMD = (DIR == "header" || DIR == "resource")?
-		"cp -pdrf '${P_SRC}'/": "cp -pdrf '${P_OBJ}'/"
+		CMD = (DIR == "header")? "cp -pdrf '${P_SRC}'/":
+		(DIR == "resource")? "cp -pdrf '${P_TGT}'/": "cp -pdrf '${P_OBJ}'/"
 		system(CMD $1 " '${P_DST}'/" DIR "/" $2 " 2>/dev/null")
 	}}'
 
@@ -180,9 +191,11 @@ cd - > /dev/null
 echo -e "\nfix kernel version:\ndone"
 echo ${K_VER} > ${P_ABS}/kernel/.scmversion
 
-echo -e "\ncreate package:"
-if test "$1" != "-r"; then
-	gen_rel_tar
-fi
-echo "done"
+echo -e "\npackage ready: ${P_ABS} !\n"
+
+#echo -e "\ncreate package:"
+#if test "$1" != "-r"; then
+#	gen_rel_tar
+#fi
+#echo "done"
 
