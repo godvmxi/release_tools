@@ -4,12 +4,13 @@ test -d tools || (echo "Wrong path `pwd`"; exit 0)
 
 image_add="\
 	output/product/items.itm \
+	output/build/linux-local/vmlinux \
 	"
 
 initrd_add= \
 
 install_add() {
-if [ -n $1 ]; then
+if [ -n "$1" ]; then
 	for i in $1; do
 		echo "install $i to $2"
 		cp -rf $i $2
