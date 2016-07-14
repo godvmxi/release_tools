@@ -77,6 +77,6 @@ sudo tar xf ${image_path}/rootfs.tar -C ${out_path}
 
 # clear environment
 sudo umount ${out_path}/system
-rm -rf ${out_path}/*
+sudo rm -rf ${out_path}/*
 echo -e "done\n"
 
