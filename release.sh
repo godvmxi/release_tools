@@ -75,7 +75,7 @@ gen_rel_mk() {
 		echo -en "\tmkdir -p \$(TARGET_DIR)/lib/modules/${K_VER}/extra/\n"
 		echo -en "\tcp -pdrf \$(${UNAME}_LOCAL_SRC)/module/*.ko \$(TARGET_DIR)/lib/modules/${K_VER}/extra/\n"
 		echo -en "\t\$(TARGET_MAKE_ENV) \$(MAKE) \$(${UNAME}_MAKE_OPTS) -C \$(${UNAME}_LOCAL_SRC) install\n"
-		echo -en "\t\$(TARGET_MAKE_ENV) \$(MAKE) \$(${UNAME}_MAKE_OPTS) -C output/build/linux-local INSTALL_MOD_PATH=${S}/../../output/system modules_install\n"
+		echo -en "\t\$(TARGET_MAKE_ENV) \$(MAKE) \$(${UNAME}_MAKE_OPTS) -C output/build/linux-local INSTALL_MOD_PATH=../../system modules_install\n"
 	fi
 	echo -en "endef\n\n"
 	echo -en "${UNAME}_POST_INSTALL_TARGET_HOOKS += ${UNAME}_RELEASE_INSTALL\n\n"
