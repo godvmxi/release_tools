@@ -13,6 +13,11 @@ then
     exit 1
 fi
 
+if [ ! -b "$1" ]; then
+	echo "Error: node $1 is not a block device"
+	exit 1
+fi
+
 umount ${1}1  > /dev/null  2>&1
 
 echo "install ius..."
@@ -44,5 +49,6 @@ echo -e "done\n"
 # format disk
 echo "format disk..."
 sudo mkdosfs -F 32 ${1}1
+sudo sync
 echo -e "done\n"
 
