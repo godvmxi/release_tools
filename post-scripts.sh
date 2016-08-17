@@ -20,9 +20,8 @@ fi
 }
 
 make_ius() {
-	version=$(cat output/product/system/root/version |  awk '{print $0}')
-	if [ "$version" =  "" ]
-	then
+	version=$(cat output/product/system/root/version 2>/dev/null |  awk '{print $0}')
+	if [ "$version" =  "" ]; then
 		output/host/usr/bin/iuw mkius output/product/$1.ixl -o output/images/$1.ius
 	else
 		output/host/usr/bin/iuw mkius output/product/$1.ixl -s $version -o output/images/$1.ius
