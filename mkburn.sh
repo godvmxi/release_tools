@@ -3,7 +3,6 @@
 # your IMAGE path
 image_path=output/images
 
-set -x
 # check args
 if [ z"$#" != z"1" ]
 then
