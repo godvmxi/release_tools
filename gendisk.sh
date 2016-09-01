@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # your IMAGE path
+cfg_path=output/product
 image_path=output/images
 out_path=output/gendisk
 iuw=output/host/usr/bin/iuw
@@ -19,14 +20,16 @@ umount ${1}*  > /dev/null  2>&1
 
 # gen environment
 mkdir -p ${out_path}/system
-cat << EOF > ${out_path}/debug.ixl
-i run 0x3c000200 0x3c000000  ../images/uboot0.isi
-i 0x31
+if grep 3c000200 ${cfg_path}/burn.ixl; then
+	echo "i run 0x3c000200 0x3c000000  ../images/uboot0.isi" > ${out_path}/debug.ixl
+else
+	echo "i run 0x08000200 0x08000000  ../images/uboot0.isi" > ${out_path}/debug.ixl
+fi
+echo "i 0x31
 r flash 1   ../images/items.itm
 r flash 3   ../images/uImage
 #i flash 2  ../images/ramdisk0.img *
-u 0x32
-EOF
+u 0x32" >> ${out_path}/debug.ixl
 
 ${iuw} mkius ${out_path}/debug.ixl -o ${out_path}/a.ius
 if [ $? -gt 0 ]
