@@ -80,6 +80,7 @@ sudo tar xf ${image_path}/rootfs.tar -C ${out_path}
 
 echo "install debugging tools..."
 sudo cp -pdrf tools/debug-ol/* ${out_path}/system/
+sudo mkdir -p ${out_path}/system/var/empty
 sudo chown root:root ${out_path}/system/var/empty
 sudo chmod 755 ${out_path}/system/var/empty
 
