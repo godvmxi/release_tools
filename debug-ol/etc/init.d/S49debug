@@ -7,6 +7,10 @@ case "$1" in
   start)
 	modprobe dwc_otg
 	modprobe g_ether
+	mount -t debugfs none /sys/kernel/debug
+	# dwc_otg soft disconnect & connect
+	echo 0 > /sys/kernel/debug/dwc_otg/link
+	echo 1 > /sys/kernel/debug/dwc_otg/link
 	ifconfig usb0 up
 	ifconfig usb0 172.3.0.2
 	;;
