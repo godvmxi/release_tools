@@ -22,7 +22,8 @@ for i in \`ps | sed '/PID/d' | sed '/sh/d' | cut -f 1 -d 'r'\`; do
 	echo \"killing \$i\"
 	kill -9 \$i > /dev/null 2>&1
 done 
-sleep 3
+umount /config
+sleep 2
 clear
 rm -f /tmp/upgrade
 rm -f /tmp/burn.ius
