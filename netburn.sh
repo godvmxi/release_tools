@@ -16,23 +16,7 @@ if test -z "`whereis python 2>/dev/null`"; then
 	exit
 fi
 
-echo " #!/bin/sh
-
-for i in \`ps | sed '/PID/d' | sed '/sh/d' | cut -f 1 -d 'r'\`; do
-	echo \"killing \$i\"
-	kill -9 \$i > /dev/null 2>&1
-done 
-umount /config
-sleep 2
-clear
-rm -f /tmp/upgrade
-rm -f /tmp/burn.ius
-wget http://${local_addr}:${local_port}/upgrade -P /tmp
-wget http://${local_addr}:${local_port}/burn.ius -P /tmp
-chmod 777 /tmp/upgrade
-/tmp/upgrade /tmp/burn.ius
-" > ${image_path}/update
-
+cp -f tools/update_arm.sh  ${image_path}/update
 cp -f ${upgrade_tool} ${image_path}
 echo -e "\nPaste the commands below to device prompt to update:\n"
 echo -e "  curl http://${local_addr}:${local_port}/update | sh\n"
