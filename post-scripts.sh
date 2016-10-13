@@ -27,9 +27,13 @@ make_ius() {
 		output/host/usr/bin/iuw mkius output/product/$1.ixl -s $version -o output/images/$1.ius
 	fi
 }
+make_burn() {
+	output/host/usr/bin/iuw mkburn output/images -o output/images/spi_burn -p 16 
+}
 
 install_add "${image_add}" output/images
 install_add "${initrd_add}" output/initrd
 make_ius ota
 make_ius burn
+make_burn
 
