@@ -107,7 +107,7 @@ gen_rel_pkg() {
 	rm ${P_DST}/* -rf
 	cp ${P_SRC}/Config.in ${P_DST}/
 
-	for i in `ls ${P_SRC}/*.pc`; do 
+	for i in `find ${P_SRC} -name "*.pc"`; do 
 		cp output/staging/usr/lib/pkgconfig/`basename $i` ${P_DST}/ 2>/dev/null
 	done
 
