@@ -28,7 +28,10 @@ gen_rel_mk() {
 	cat system/$1/${LNAME}.mk | grep "VERSION" | head -1
 	echo -en "${UNAME}_SOURCE =\n"
 	echo -en "${UNAME}_MAINTAINED = YES\n"
-	cat system/$1/${LNAME}.mk | grep "DEPENDENCIES" | head -1
+	echo -en "${UNAME}_DEPENDENCIES = \n"
+	for pkg in `cat output/build/build-time.log | cut -f 4 -d ':' | uniq`;
+		do grep -q $pkg system/$1/${LNAME}.mk && echo -en "${UNAME}_DEPENDENCIES += $pkg\n";
+	done
 	echo
 	echo -en "${UNAME}_LOCAL_SRC = \$(shell pwd)/system/${LNAME}\n\n"
 	echo -e "${UNAME}_MAKE_OPTS = \\"
