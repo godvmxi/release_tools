@@ -23,8 +23,8 @@ pivot_root /tmp /tmp/old
 clear
 rm -f /tmp/upgrade
 rm -f /tmp/burn.ius
-wget http://192.168.1.84:8080/upgrade -P /tmp
-wget http://192.168.1.84:8080/burn.ius -P /tmp
+wget http://__SERVER_IP__:__SERVER_PORT__/upgrade -P /tmp
+wget http://__SERVER_IP__:__SERVER_PORT__/burn.ius -P /tmp
 chmod 777 /tmp/upgrade
 /tmp/upgrade /tmp/burn.ius
 

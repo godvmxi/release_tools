@@ -18,6 +18,8 @@ fi
 
 cp -f tools/update_arm.sh  ${image_path}/update
 cp -f ${upgrade_tool} ${image_path}
+sed -i "s/__SERVER_IP__/${local_addr}/g" ${image_path}/update
+sed -i "s/__SERVER_PORT__/${local_port}/g" ${image_path}/update
 echo -e "\nPaste the commands below to device prompt to update:\n"
 echo -e "  curl http://${local_addr}:${local_port}/update | sh\n"
 echo -e "After updating, Ctrl-C to exit..."
