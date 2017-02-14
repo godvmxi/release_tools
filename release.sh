@@ -154,23 +154,6 @@ gen_rel_tar() {
 	echo -en "]"
 }
 
-gen_authorized_id()
-{
-if [ -f output/product/AUTHORIZED_IDS ]; then
-        echo -en "const char * authorized_ids[] = {" >> authorized_id_tmp.h
-        for chip in `cat output/product/AUTHORIZED_IDS`; do
-                if [ $chip ]; then
-                        echo "argume:$chip"
-                        echo -en "\"${chip}\"," >> authorized_id_tmp.h
-                fi
-        done
-        echo -en "};\n" >> authorized_id_tmp.h
-        cat authorized_id_tmp.h | sed 's/,};/};/' > ${P_ABS}/system/hlibispv2505/DDKSource/CI/felix/felix_lib/kernel/include/ci_internal/authorized_id.h
-        rm authorized_id_tmp.h
-        echo "done"
-fi
-}
-
 # set -x
 DIRS="buildroot system bootloader kernel products tools"
 FILES=Makefile
@@ -182,7 +165,6 @@ K_VER=`ls output/system/lib/modules/ | head -1`
 echo -e "\nprepare source code:"
 if test "$1" != "-r"; then
 	gen_rel_dir
-	gen_authorized_id
 fi
 
 if test "$1" != "-n"; then
