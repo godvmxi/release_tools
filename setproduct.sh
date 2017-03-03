@@ -23,5 +23,7 @@ if test -d products/$prod; then
 	echo -e "\nproduct successfully set to $prod\n"
 else
 	echo $prod is not a valid product
+	exit
 fi
 
+python ./tools/select_sensor.py	/products/$prod/

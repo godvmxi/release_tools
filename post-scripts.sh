@@ -3,7 +3,7 @@
 test -d tools || (echo "Wrong path `pwd`"; exit 0)
 
 image_add="\
-	output/product/items.itm \
+	output/product/items.itm.tmp \
 	output/build/linux-local/vmlinux \
 	"
 
@@ -32,6 +32,8 @@ make_burn() {
 }
 
 install_add "${image_add}" output/images
+mv output/images/items.itm.tmp output/images/items.itm
+rm -f output/product/items.itm.tmp
 install_add "${initrd_add}" output/initrd
 make_ius ota
 make_ius burn
