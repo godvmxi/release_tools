@@ -113,7 +113,7 @@ def list_menu(path):
             if (input == 'x'):
                 del sn[0:]
                 i = 0
-                remove_exit_config(itm)
+                remove_exist_config(itm)
                 continue
             else:
                 do_copy_configure(path + '/' + itm, int(input))
