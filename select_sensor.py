@@ -18,6 +18,17 @@ def remove_sensor_items():
     #print "file = " + file
     os.system("sed -i /\#ddk.items.start/,/#ddk.items.end/d" + ' ' + tmp_itm)
 
+def remove_exist_config(name):
+    tmp = os.getcwd() + sys.argv[1] + 'system/root/'
+    target = tmp + '.ispddk'
+    for (dir, subdir, file_name) in os.walk(target):
+        for file_elem in file_name:
+            #print file_elem
+            name_list = file_elem.split('-')
+            if (name_list[0] == name):
+                os.system("rm -f " + target + '/' + file_elem)
+            #print name_list[0]
+
 def do_copy_sensor_items(file):
     fp = open(file, 'r')
     for line in fp.readlines():
@@ -67,6 +78,7 @@ def do_copy_configure(path, index):
     if (not os.path.exists(target)):
         os.system("mkdir " + target)
     #else:
+
     src = path + '/' + sn[index]
     print "src = " +src
     if (0 == check_items_exist(src)):
@@ -95,10 +107,16 @@ def list_menu(path):
                 sn.append(elem)
                 print "     %d   :%s" %(i, elem)
                 i +=1
+            print "     %c   :%s" %('x', "none " + itm)
             #wait ui input the number and copy the configure file to fixed directory.
             input = raw_input("your select:")
-
-            do_copy_configure(path + '/' + itm, int(input))
+            if (input == 'x'):
+                del sn[0:]
+                i = 0
+                remove_exit_config(itm)
+                continue
+            else:
+                do_copy_configure(path + '/' + itm, int(input))
             del sn[0:]
         i = 0
 
