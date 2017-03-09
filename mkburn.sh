@@ -2,6 +2,9 @@
 
 # your IMAGE path
 image_path=output/images
+sd_dir=${1}
+sd_name=${sd_dir##*/}
+check_dir=/sys/block/${sd_name}/removable
 
 # check args
 if [ z"$#" != z"1" ]
@@ -14,6 +17,18 @@ fi
 
 if [ ! -b "$1" ]; then
 	echo "Error: node $1 is not a block device"
+	exit 1
+fi
+
+if [ ! -f "$check_dir" ];then
+	echo -e "Error: dir $check_dir not exit"
+	exit 1
+fi
+
+value=$(cat ${check_dir})
+
+if [ z"$value" != z"1" ];then
+	echo -e "Error: not burn card insert, please insert burn card and try again"
 	exit 1
 fi
 
