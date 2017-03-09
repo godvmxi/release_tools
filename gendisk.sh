@@ -5,6 +5,9 @@ cfg_path=output/product
 image_path=output/images
 out_path=output/gendisk
 iuw=output/host/usr/bin/iuw
+sd_dev=${1}
+sd_name=${sd_dev##*/}
+check_dir=/sys/block/${sd_name}/removable
 
 set +x
 # check args
@@ -14,6 +17,23 @@ then
 	echo
     echo -e "example $0 /dev/sdb"
     exit 1
+fi
+
+if [ ! -b "$1" ]; then
+        echo "Error: node $1 is not a block device"
+        exit 1
+fi
+
+if [ ! -f "$check_dir" ];then
+        echo -e "Error: dir $check_dir not exit"
+        exit 1
+fi
+
+value=$(cat ${check_dir})
+
+if [ z"$value" != z"1" ];then
+        echo -e "Error: not burn card insert, please insert burn card and try again"
+        exit 1
 fi
 
 umount ${1}*  > /dev/null  2>&1
