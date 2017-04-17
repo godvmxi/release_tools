@@ -91,7 +91,7 @@ echo -e "done\n"
 # format disk
 echo "format disk..."
 sudo mkdosfs -F 32 ${1}1
-sudo mke2fs -t ext4 -Fq ${1}2 > /dev/null
+sudo mke2fs -t ext2 -Fq ${1}2 > /dev/null
 echo -e "done\n"
 
 echo "install system..."

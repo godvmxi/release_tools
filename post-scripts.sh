@@ -19,6 +19,14 @@ fi
 
 }
 
+make_md5() {
+	if [ -e output/images/$1.ius ]; then
+		(cd output/images/ && md5sum $1.ius) > output/images/$1.ius.md5
+	else
+		echo "Error: $1.ius is not found"
+	fi
+}
+
 make_ius() {
 	version=$(cat output/product/system/root/version 2>/dev/null |  awk '{print $0}')
 	if [ "$version" =  "" ]; then
@@ -26,6 +34,8 @@ make_ius() {
 	else
 		output/host/usr/bin/iuw mkius output/product/$1.ixl -s $version -o output/images/$1.ius
 	fi
+
+	make_md5 $1
 }
 make_burn() {
 	output/host/usr/bin/iuw mkburn output/images -o output/images/spi_burn -p 16 
