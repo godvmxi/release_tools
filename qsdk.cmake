@@ -1,71 +1,84 @@
 #!/bin/bash
-if [[ ! -d kernel || ! -d tools ]]; then 
-    echo -e "please run me in qsdk root dir"
-    exit 1
-fi
 source tools/qsdk.env
 help(){
     echo -e "usage :  must run in qsdk root dir"
-    echo -e "\t app target_rootfs config config_file"
+    echo -e "\t app target_rootfs config source_dir [install_dir] [other define]"
     echo -e "\t app target_rootfs make"
     echo -e "\t app target_rootfs install"
     echo -e "\t app target_rootfs clean"
 }
 
-kernel_config(){
-    echo -e "-->config kernel"
+cmake_config(){
+    echo -e "-->config cmake"
     if [[ ! -f $1 ]];then
         echo -e "config file is not exist"
         exit 1
     fi
-    cp $1 ${WORKSPACE}/kernel/.config
+    cp $1 ${WORKSPACE}/cmake/.config
 }
-kernel_menuconfig(){
-    echo -e "-->menuconfig kernel"
-    make  ARCH=arm  CROSS_COMPILE="${CROSS_COMPILE}"   -C ${WORKSPACE}/kernel  menuconfig
+cmake_menuconfig(){
+    echo -e "-->menuconfig cmake"
+    make  ARCH=arm  CROSS_COMPILE="${CROSS_COMPILE}"   -C ${WORKSPACE}/cmake  menuconfig
 }
-kernel_make(){
-    echo -e "-->make kernel"
-    PATH=${HOST_BIN_DIR}:$PATH make -j6 ARCH=arm  CROSS_COMPILE="${CROSS_COMPILE}"  -C ${WORKSPACE}/kernel
+cmake_make(){
+    echo -e "-->make cmake"
+    PATH=${HOST_BIN_DIR}:$PATH make -j6 ARCH=arm  CROSS_COMPILE="${CROSS_COMPILE}"  -C ${WORKSPACE}/cmake
 }
-kernel_install(){
-    echo -e "-->install kernel"
-    cp -fv ${WORKSPACE}/kernel/arch/arm/boot/*mage   ${OUTPUT_DIR}/images/
-    find ${WORKSPACE}/kernel/ -name "*.ko"  |xargs -i cp -fv {} ${OUTPUT_DIR}/system/lib/modules/
+cmake_install(){
+    echo -e "-->install cmake"
+    cp -fv ${WORKSPACE}/cmake/arch/arm/boot/*mage   ${OUTPUT_DIR}/images/
+    find ${WORKSPACE}/cmake/ -name "*.ko"  |xargs -i cp -fv {} ${OUTPUT_DIR}/system/lib/modules/
 }
-kernel_clean(){
-    echo -e "-->clean kernel"
-    make ARCH=arm  CROSS_COMPILE="${CROSS_COMPILE}"  -C ${WORKSPACE}/kernel clean
+cmake_clean(){
+    echo -e "-->clean cmake"
+    make ARCH=arm  CROSS_COMPILE="${CROSS_COMPILE}"  -C ${WORKSPACE}/cmake clean
 }
-kernel_distclean(){
-    echo -e "-->clean kernel"
-    make ARCH=arm  CROSS_COMPILE="${CROSS_COMPILE}"  CONFIG_PREFIX="${target_rootfs}"   -C ${WORKSPACE}/kernel  distclean
-    make ARCH=arm  CROSS_COMPILE="${CROSS_COMPILE}"  CONFIG_PREFIX="${target_rootfs}"   -C ${WORKSPACE}/kernel  mrproper
+cmake_distclean(){
+    echo -e "-->clean cmake"
+    make ARCH=arm  CROSS_COMPILE="${CROSS_COMPILE}"  CONFIG_PREFIX="${target_rootfs}"   -C ${WORKSPACE}/cmake  distclean
+    make ARCH=arm  CROSS_COMPILE="${CROSS_COMPILE}"  CONFIG_PREFIX="${target_rootfs}"   -C ${WORKSPACE}/cmake  mrproper
 }
 if [[ ! -d tools ]];then
     help
     exit 1
 fi
 target_rootfs=`pwd`/$1
-
-case $1 in
+old_pwd=`pwd`
+case $2 in
     config )
-        kernel_config  $2
-        ;;
-    menuconfig )
-        kernel_menuconfig
+        echo -e "\nentry source dir"
+        cd $1
+        echo -e "\tclean old build"
+        rm -rf build
+        echo -e "\tcreate temp build dir"
+        mkdir -p build
+        cd build
+        echo -e "\tcongigure and create makefile"
+        cmake $3  $4 $5 $6 $7 ..
+        ls
+        pwd
+        cd $old_pwd
         ;;
     make )
-        kernel_make
+        cd $1/build
+        echo -e "\nmake target"
+        make
+        cd $old_pwd
         ;;
     install )
-        kernel_install 
+        echo -e "\ninstall target"
+        cd $1/build
+        make install
+        cd $old_pwd
         ;;
     clean )
-        kernel_clean
+        echo -e "\nclean temp build"
+        cd $1/build
+        rm -rf build
+        cd $old_pwd
         ;;
     distclean )
-        kernel_distclean
+        cmake_distclean
         ;;
     * )
         help
