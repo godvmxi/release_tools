@@ -87,6 +87,7 @@ rel_qsdk_files(){
     cp -rf usr/local/lib/*  usr/lib/
     cp -rf usr/local/include/*  usr/include/
     rm -rf usr/local
+    rm -rf /lib/modules/*
     find usr/lib/pkgconfig  -name "*.pc" | xargs  -i  sed -i "s/\/local//g"  {}
     rel_clean_busybox_files ${P_REL_ABS}/qsdk/
 }

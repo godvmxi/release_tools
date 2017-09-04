@@ -16,5 +16,6 @@ find $1 -name "*.la"  |xargs -i rm -rfv {}
 find $1 -name "*.la~"  |xargs -i rm -rfv {}
 rm -rfv $1/usr/local 
 rm -rfv $1/usr/share
+rm -rfv $1/THIS_IS_NOT_YOUR_ROOT_FILESYSTEM
 
 
