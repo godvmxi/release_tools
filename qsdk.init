@@ -11,6 +11,7 @@ init_rootfs_dir(){
              etc \
              home \
              lib \
+             lib/modules \
              media \
              mnt \
              root \
