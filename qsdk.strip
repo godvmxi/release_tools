@@ -12,6 +12,7 @@ if [[ $# < 1 ]] ; then
     help
     exit 1
 fi
-cp -rf $1/*   $2
+. tools/qsdk.env
+find $1  -name "*"  |xargs -i ${STRIP}  --remove-section=.comment --remove-section=.note --strip-unneeded {}
 
 
