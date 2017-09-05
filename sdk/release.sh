@@ -14,10 +14,6 @@ rel_init_rel_dir(){
     mkdir -p  ${P_REL_ABS}/packages
     mkdir -p  ${P_REL_ABS}/private
     mkdir -p  ${P_REL_ABS}/tools
-    mkdir -p  ${P_REL_ABS}/tools/host/bin
-    mkdir -p  ${P_REL_ABS}/tools/host/sbin
-    mkdir -p  ${P_REL_ABS}/tools/host/lib
-    mkdir -p  ${P_REL_ABS}/tools/host/share
     mkdir -p  ${P_REL_ABS}/qsdk
     mkdir -p  ${P_REL_ABS}/qsdk/ramdisk
     tree ${P_REL_ABS}
@@ -90,6 +86,16 @@ rel_qsdk_files(){
     rm -rf usr/local
     rm -rf /lib/modules/*
     find usr/lib/pkgconfig  -name "*.pc" | xargs  -i  sed -i "s/\/local//g"  {}
+    rm -rf $1/usr/local 
+    rm -rf $1/usr/share
+    rm -rf $1/THIS_IS_NOT_YOUR_ROOT_FILESYSTEM
+    rm -rf $1/usr/lib/alsa-lib
+    rm -rf $1/usr/lib/engins
+    rm -rf $1/usr/lib/libpthread*
+    rm -rf $1/usr/lib/libform*
+    rm -rf $1/usr/lib/libpanel*
+
+
     rel_clean_busybox_files ${P_REL_ABS}/qsdk/
 }
 rel_repo_source(){

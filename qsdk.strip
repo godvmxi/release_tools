@@ -13,6 +13,12 @@ if [[ $# < 1 ]] ; then
     exit 1
 fi
 . tools/qsdk.env
-find $1  -name "*"  |xargs -i ${STRIP}  --remove-section=.comment --remove-section=.note --strip-unneeded {}
+find $1 -type f   -perm /111 -not \( -name 'libpthread*.so*' \) -print |xargs -i ${STRIP}  --remove-section=.comment --remove-section=.note {}  2>/dev/null 
+find $1/lib/modules/ -type f -name "*.ko"  |xargs -i ${STRIP}  --remove-section=.comment --remove-section=.note --strip-unneeded {}
+find $1 -type f -name "libpthread*.so*"  |xargs -i ${STRIP}  --remove-section=.comment --remove-section=.note --strip-debug {}
+#find $1/bin -type f   -perm /111 -not \( -name 'libpthread*.so*' \) -print |xargs -i ${STRIP}  --remove-section=.comment --remove-section=.note --strip-unneeded {}
+#find $1/sbin -name "*"  |xargs -i ${STRIP}  --remove-section=.comment --remove-section=.note --strip-unneeded {}
+#find $1/usr/bin -name "*"  |xargs -i ${STRIP}  --remove-section=.comment --remove-section=.note --strip-unneeded {}
+#find $1/usr/sbin -name "*"  |xargs -i ${STRIP}  --remove-section=.comment --remove-section=.note --strip-unneeded {}
 
 

@@ -6,12 +6,12 @@ echo -e "build dir ->"${BUILD_DIR}
 
 chown -R 0:0 ${ROOTFS_DIR}
 mkdir -p ${BUILD_DIR}
-touch ${ROOTFS_DIR}/etc/shadow
-touch ${ROOTFS_DIR}/etc/shadow-
-touch ${ROOTFS_DIR}/etc/passwd
-touch ${ROOTFS_DIR}/etc/passwd-
-touch ${ROOTFS_DIR}/etc/random-
-touch ${ROOTFS_DIR}/etc/random-seed
+#touch ${ROOTFS_DIR}/etc/shadow
+#touch ${ROOTFS_DIR}/etc/shadow-
+#touch ${ROOTFS_DIR}/etc/passwd
+#touch ${ROOTFS_DIR}/etc/passwd-
+#touch ${ROOTFS_DIR}/etc/random-
+#touch ${ROOTFS_DIR}/etc/random-seed
 echo '\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n' > ${BUILD_DIR}/_users_table.txt
 
 makedevs -d ${BUILD_DIR}/device_table.txt  ${ROOTFS_DIR}

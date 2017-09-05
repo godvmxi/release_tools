@@ -17,5 +17,11 @@ find $1 -name "*.la~"  |xargs -i rm -rfv {}
 rm -rfv $1/usr/local 
 rm -rfv $1/usr/share
 rm -rfv $1/THIS_IS_NOT_YOUR_ROOT_FILESYSTEM
+rm -rfv $1/usr/lib/alsa-lib
+rm -rfv $1/usr/lib/engins
+rm -rfv $1/usr/lib/pkgconfig
+rm -rfv $1/usr/lib/libpthread*
+rm -rfv $1/usr/lib/libform*
+rm -rfv $1/usr/lib/libpanel*
 
 
