@@ -42,6 +42,7 @@ rel_host_extra(){
     cp -rf ${WORKSPACE}/buildroot/support/scripts/mkusers  ${P_REL_ABS}/toolchain/bin/
     cp -rf ${WORKSPACE}/buildroot/fs/ext2/genext2fs.sh  ${P_REL_ABS}/toolchain/bin/
     cp -rf ${WORKSPACE}/output/host/usr/bin/mkimage   ${P_REL_ABS}/toolchain/bin/
+    cp -rf ${WORKSPACE}/output/host/usr/bin/makedevs   ${P_REL_ABS}/toolchain/bin/
     return
     echo -e "\t -->check bin"
     for i in `ls output/host/usr/bin/`
