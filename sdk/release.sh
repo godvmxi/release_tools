@@ -84,16 +84,16 @@ rel_qsdk_files(){
     cp -rf usr/local/lib/*  usr/lib/
     cp -rf usr/local/include/*  usr/include/
     rm -rf usr/local
-    rm -rf /lib/modules/*
+    rm -rf lib/modules/*
     find usr/lib/pkgconfig  -name "*.pc" | xargs  -i  sed -i "s/\/local//g"  {}
-    rm -rf $1/usr/local 
-    rm -rf $1/usr/share
-    rm -rf $1/THIS_IS_NOT_YOUR_ROOT_FILESYSTEM
-    rm -rf $1/usr/lib/alsa-lib
-    rm -rf $1/usr/lib/engins
-    rm -rf $1/usr/lib/libpthread*
-    rm -rf $1/usr/lib/libform*
-    rm -rf $1/usr/lib/libpanel*
+    rm -rf usr/local 
+    rm -rf usr/share
+    rm -rf THIS_IS_NOT_YOUR_ROOT_FILESYSTEM
+    rm -rf usr/lib/alsa-lib
+    rm -rf usr/lib/engins
+    rm -rf usr/lib/libpthread*
+    rm -rf usr/lib/libform*
+    rm -rf usr/lib/libpanel*
 
 
     rel_clean_busybox_files ${P_REL_ABS}/qsdk/
