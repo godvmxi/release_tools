@@ -1,6 +1,7 @@
 #!/bin/bash
 help(){
     echo -e "usage :  must run in qsdk root dir"
+    echo -e "\t app source_dir reconfig"
     echo -e "\t app source_dir config source_dir [install_dir] [other define]"
     echo -e "\t app source_dir make"
     echo -e "\t app source_dir install"
