@@ -30,6 +30,9 @@ rel_host_toolchain(){
     echo -e "\tverison ->"${toolchain_dir}
     cp -rf buildroot/prebuilts/${toolchain_dir}/*  ${P_REL_ABS}/toolchain
     TOOLCHAIN_PREFIX=`basename output/host/usr/arm-*`
+    cd ${P_REL_ABS}/toolchain/${TOOLCHAIN_PREFIX}/sysroot/lib
+    thread_link=`ls libpthread.so*`
+    ln -sf ${thread_link} libpthread.so
 
 }
 rel_host_extra(){
