@@ -140,6 +140,7 @@ rel_busybox_extra(){
 }
 rel_tools_extra(){
     echo -e "-->release tools extra"
+    mv ${P_REL_ABS}/tools/sdk/qsdk.*  ${P_REL_ABS}/tools/
 }
 rel_custom_packages(){
     echo -e "-->release custom package"
@@ -247,6 +248,7 @@ rel_sdk(){
     rel_host_toolchain
     rel_host_extra
     rel_repo_source tools
+    rel_tools_extra
     rel_repo_source bootloader
     rel_repo_source kernel
     rel_bootloader_fix
