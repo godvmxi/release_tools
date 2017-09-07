@@ -33,6 +33,7 @@ rel_host_toolchain(){
     cd ${P_REL_ABS}/toolchain/${TOOLCHAIN_PREFIX}/sysroot/lib
     thread_link=`ls libpthread.so*`
     ln -sf ${thread_link} libpthread.so
+    cd {WORKSPACE}
 
 }
 rel_host_extra(){
